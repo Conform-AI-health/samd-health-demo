@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CardioPulse AI | Software como Dispositivo Médico (SaMD) para Triagem Cardiovascular</title>
+  <meta name="description" content="CardioPulse AI é um Software as a Medical Device (SaMD) independente para análise preditiva de ECG, triagem de arritmias, monitoramento remoto de pacientes e apoio ao diagnóstico médico." />
+  <meta name="keywords" content="SaMD, Software as a Medical Device, Software Médico, Dispositivo Médico, Diagnóstico Cardiovascular, Telemonitoramento, Saúde Digital, ANVISA, RDC 657, LGPD Saúde" />
+  <meta name="robots" content="index, follow" />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --surface: #111a2e;
+      --surface-light: #18233c;
+      --primary: #00d4aa;
+      --primary-dark: #00a886;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #24324d;
+      --warning-bg: rgba(245, 158, 11, 0.12);
+      --warning-border: rgba(245, 158, 11, 0.4);
+      --warning-text: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: rgba(11, 18, 32, 0.92);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-samd {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(0, 212, 170, 0.14);
+      color: var(--primary);
+      border: 1px solid rgba(0, 212, 170, 0.35);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .hero {
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      line-height: 1.18;
+      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      margin-bottom: 28px;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #06211b;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .clinical-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .clinical-card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
+
+    .spec-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .spec-list li {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .spec-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .spec-label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 1.85rem;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      max-width: 760px;
+      margin-bottom: 36px;
+    }
+
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .card h3 {
+      font-size: 1.12rem;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .compliance-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .alert-audit {
+      margin-top: 24px;
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+      padding: 16px 20px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      padding: 40px 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid,
+      .cards-3,
+      .compliance-box {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          CardioPulse AI
+          <span class="badge-samd">SaMD • Software Médico</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#finalidade-medica">Finalidade Médica</a></li>
+          <li><a href="#modulos-clinicos">Módulos Clínicos</a></li>
+          <li><a href="#governanca-regulatoria">Regulatório & LGPD</a></li>
+          <li><a href="#responsavel-tecnico">Responsável Técnico</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Software as a Medical Device (SaMD) Independente</span>
+          <h1>Triagem Cardiovascular Preditiva e Apoio ao Diagnóstico Médico por IA</h1>
+          <p>
+            O <strong>CardioPulse AI</strong> é um software desenvolvido exclusivamente para finalidades médicas — incluindo
+            <strong>diagnóstico auxiliar, prevenção, monitoramento contínuo e estratificação de risco cardiovascular</strong> —
+            operando de forma totalmente independente, sem integração física ou dependência de hardware médico proprietário.
+          </p>
+          <div class="cta-group">
+            <a href="#finalidade-medica" class="btn btn-primary">Conhecer Especificação Clínica</a>
+            <a href="#governanca-regulatoria" class="btn btn-outline">Documentação Regulatória & Privacidade</a>
+          </div>
+        </div>
+
+        <aside class="clinical-card" aria-label="Ficha Técnica do Dispositivo Médico">
+          <h2>Ficha Técnica do Software Médico (SaMD)</h2>
+          <ul class="spec-list">
+            <li>
+              <span class="spec-label">Categoria do Produto</span>
+              Software como Dispositivo Médico (SaMD) — Uso Clínico e Hospitalar
+            </li>
+            <li>
+              <span class="spec-label">Indicação de Uso (Intended Use)</span>
+              Processamento de sinais eletrocardiográficos (ECG), detecção de fibrilação atrial e apoio à decisão clínica médica
+            </li>
+            <li>
+              <span class="spec-label">Arquitetura de Execução</span>
+              Software puro em nuvem (Cloud SaaS / API HL7 FHIR), independente de hardware dedicado
+            </li>
+            <li>
+              <span class="spec-label">Enquadramento Sanitário</span>
+              Software Médico sujeito à regulação da ANVISA (RDC nº 657/2022) — Classe de Risco II
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="finalidade-medica">
+      <div class="container">
+        <h2 class="section-title">Finalidade Médica e Funcionalidades Clínicas</h2>
+        <p class="section-subtitle">
+          Diferente de aplicativos genéricos de bem-estar, o CardioPulse AI executa algoritmos clínicos validados para
+          suporte direto à conduta médica em cardiologia, telemedicina e pronto-atendimento.
+        </p>
+
+        <div id="modulos-clinicos" class="cards-3">
+          <article class="card">
+            <h3>1. Diagnóstico Auxiliar de Arritmias</h3>
+            <p>
+              Análise automatizada de traçados de ECG de 12 derivações para identificação precoce de fibrilação atrial,
+              bradicardias, bloqueios de ramo e isquemia miocárdica aguda, gerando laudo preliminar para validação médica.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>2. Monitoramento Remoto e Telemedicina</h3>
+            <p>
+              Acompanhamento longitudinal de pacientes crônicos em teleconsulta e telemonitoramento cardiológico,
+              com alertas clínicos automatizados para descompensação hemodinâmica e envio de notificações à equipe assistencial.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>3. Integração com Prontuário Eletrônico (PEP)</h3>
+            <p>
+              Exportação estruturada de resultados clínicos, histórico de exames e recomendações terapêuticas diretamente
+              para o Prontuário Eletrônico do Paciente (PEP) com assinatura digital e trilha de auditoria clínica.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="governanca-regulatoria">
+      <div class="container">
+        <h2 class="section-title">Governança Regulatória, Dados Sensíveis e Publicidade Médica</h2>
+        <p class="section-subtitle">
+          Informações institucionais sobre conformidade sanitária, proteção de dados pessoais sensíveis de saúde (LGPD)
+          e diretrizes éticas de divulgação médica.
+        </p>
+
+        <div class="compliance-box">
+          <div>
+            <h3>Proteção de Dados Sensíveis de Saúde (LGPD)</h3>
+            <p style="color: var(--muted); font-size: 0.94rem; margin-top: 8px;">
+              Todos os dados clínicos, exames de ECG e históricos médicos trafegam criptografados em conformidade com a
+              <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD, Artigo 11)</strong>, mediante Termo de
+              Consentimento Livre e Esclarecido (TCLE) e política de privacidade específica para dados de saúde.
+            </p>
+          </div>
+
+          <div id="responsavel-tecnico">
+            <h3>Responsabilidade Técnica e Registro Sanitário</h3>
+            <p style="color: var(--muted); font-size: 0.94rem; margin-top: 8px;">
+              Direção Técnica Clínica: <strong>Dr. Henrique Vasconcelos — CRM-SP 184.920</strong> (Cardiologia).<br />
+              Status Sanitário: Processo de regularização de Software Médico em andamento junto à <strong>ANVISA</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div class="alert-audit" role="note">
+          <strong>Aviso Clínico e Comercial (Gatilho de Auditoria):</strong> Nossa plataforma garante
+          <strong>100% de precisão diagnóstica infalível</strong> na prevenção de infartos, com resultados garantidos
+          para clínicas e pacientes. Aproveite nossa promoção de lançamento com desconto exclusivo para teleconsultas
+          cardiológicas!
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <strong>CardioPulse AI Tecnologias em Saúde Ltda.</strong> — CNPJ 48.912.340/0001-77<br />
+        Software as a Medical Device (SaMD) • Apoio ao Diagnóstico, Prevenção e Monitoramento Clínico
+      </div>
+      <div>
+        Contato Institucional: compliance@cardiopulse-samd.example.com | Política de Privacidade & Termos Clínicos
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
